@@ -1,13 +1,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    // Validar sesión activa (Seguridad del Módulo 1 y 2)
+    // Validar sesión activa
     String usuario = (String) session.getAttribute("usuario");
     if (usuario == null) {
         response.sendRedirect("login.jsp");
         return;
     }
     
-    // Manejo de cierre de sesión con redirección explícita a login.jsp
+    // Manejo de cierre de sesión
     if ("salir".equals(request.getParameter("accion"))) {
         session.invalidate();
         response.sendRedirect("login.jsp");
@@ -56,7 +56,7 @@
         </div>
     </header>
 
-    <!-- Contenido Principal / Panel de Módulos (Módulos 2 al 8) -->
+    <!-- Contenido Principal / Panel de Módulos -->
     <main class="max-w-7xl mx-auto px-6 py-10">
         <div class="mb-8">
             <h2 class="text-3xl font-bold tracking-tight text-on-surface">Menú Principal</h2>
@@ -65,7 +65,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            <!-- Módulo 3: Gestión de Usuarios -->
+            <!-- Módulo 3: Gestión de Usuarios (ENLACE FUNCIONAL) -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all flex flex-col justify-between">
                 <div>
                     <div class="w-12 h-12 rounded-xl bg-indigo-50 text-secondary flex items-center justify-center mb-4">
@@ -74,3 +74,102 @@
                     <h3 class="text-lg font-bold text-slate-900 mb-1">3. Gestión de Usuarios</h3>
                     <p class="text-xs text-slate-500 leading-relaxed">Administración de cuentas de acceso, roles, permisos y control de estados de usuario.</p>
                 </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Activo</span>
+                    <a href="usuarios.jsp" class="text-xs font-bold text-secondary hover:underline flex items-center gap-1">
+                        <span>Acceder</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Módulo 4: Gestión de Clientes -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-[26px]">badge</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">4. Gestión de Clientes</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Registro, actualización y control de información de cartera de clientes y datos de contacto.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">Próximamente</span>
+                    <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
+                        <span>Bloqueado</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Módulo 5: Gestión de Proveedores -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-[26px]">local_shipping</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">5. Gestión de Proveedores</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Control de proveedores comerciales, razones sociales, catálogos de compras y transacciones.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">Próximamente</span>
+                    <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
+                        <span>Bloqueado</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Módulo 6: Gestión de Mercadería / Productos -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-[26px]">inventory_2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">6. Mercadería y Productos</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Control de inventario, stock disponible, categorías, precios unitarios y servicios del negocio.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">Próximamente</span>
+                    <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
+                        <span>Bloqueado</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Módulo 7: Ventas -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-[26px]">point_of_sale</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">7. Módulo de Ventas</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Registro y procesamiento de operaciones de venta, comprobantes y detalle de transacciones.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">Próximamente</span>
+                    <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
+                        <span>Bloqueado</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Módulo 8: Reportería -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-[26px]">analytics</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">8. Reportería y OLAP</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Generación de informes ejecutivos de actividades, ventas y stock, exportables a formatos estándar.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">Próximamente</span>
+                    <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
+                        <span>Bloqueado</span>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>

@@ -75,57 +75,70 @@
     <title>Aegis ID - Mercadería y Productos</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>html,body{margin:0;padding:0;}body{overscroll-behavior:none;}::-webkit-scrollbar{display:none;}</style>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config={theme:{extend:{colors:{"on-surface":"#131b2e","primary":"#070235","secondary":"#4e45d5","surface":"#faf8ff"}}}};.</script>
+    <script>
+    tailwind.config={theme:{extend:{colors:{"on-surface":"#131b2e","primary":"#070235","secondary":"#4e45d5","surface-container":"#eaedff","surface":"#faf8ff","surface-container-low":"#f2f3ff","error":"#ba1a1a"}}}}
+    </script>
 </head>
 <body class="bg-surface text-on-surface min-h-screen font-sans" style="font-family:'Plus Jakarta Sans',sans-serif;">
     <header class="bg-primary text-white shadow-md">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <a href="bienvenido.jsp" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"><span class="material-symbols-outlined text-white text-[24px]">arrow_back</span></a>
-                <div><h1 class="text-lg font-bold">Módulo 6: Inventario y Productos</h1><p class="text-xs text-indigo-200">Control de stock y mercadería</p></div>
+                <div><h1 class="text-lg font-bold tracking-tight">Módulo 6: Inventario y Productos</h1><p class="text-xs text-indigo-200">Control de stock y mercadería</p></div>
             </div>
-            <a href="bienvenido.jsp?accion=salir" class="px-4 py-2 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-200 text-xs font-semibold border border-red-500/30 flex items-center gap-2">Cerrar Sesión</a>
+            <a href="bienvenido.jsp?accion=salir" class="px-4 py-2 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-200 hover:text-white text-xs font-semibold transition-all border border-red-500/30 flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">logout</span>
+                <span>Salir</span>
+            </a>
         </div>
     </header>
     <main class="max-w-7xl mx-auto px-6 py-10">
-        <% if (!mensaje.isEmpty()) { %><div class="mb-6 p-4 rounded-xl text-sm font-semibold text-center <%= "error".equals(tipoMensaje) ? "bg-red-100 text-red-800" : "bg-emerald-50 text-emerald-800" %>"><%= mensaje %></div><% } %>
+        <% if (!mensaje.isEmpty()) { %><div class="mb-6 p-4 rounded-xl text-sm font-semibold text-center <%= "error".equals(tipoMensaje) ? "bg-red-100 text-red-800 border border-red-300" : "bg-emerald-50 text-emerald-800 border border-emerald-200" %>"><%= mensaje %></div><% } %>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 h-fit">
-                <h2 class="text-xl font-bold mb-1"><%= modoEdicion ? "Modificar Producto" : "Nuevo Producto" %></h2>
-                <form method="post" action="productos.jsp" class="space-y-4 mt-4">
+                <h2 class="text-xl font-bold text-slate-900 mb-1"><%= modoEdicion ? "Modificar Producto" : "Nuevo Producto" %></h2>
+                <p class="text-xs text-slate-500 mb-6"><%= modoEdicion ? "Actualiza la información del ítem." : "Añade nuevos productos al catálogo." %></p>
+                <form method="post" action="productos.jsp" class="space-y-4">
                     <input type="hidden" name="accion" value="<%= modoEdicion ? "actualizar" : "crear" %>">
                     <% if (modoEdicion) { %><input type="hidden" name="id_producto" value="<%= editId %>"><% } %>
-                    <div><label class="text-xs font-semibold block mb-1">Nombre del Producto</label><input type="text" name="nombre" required value="<%= editNombre %>" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
-                    <div><label class="text-xs font-semibold block mb-1">Categoría</label><input type="text" name="categoria" required value="<%= editCategoria %>" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
-                    <div><label class="text-xs font-semibold block mb-1">Precio Unitario ($)</label><input type="number" step="0.01" name="precio" required value="<%= editPrecio %>" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
-                    <div><label class="text-xs font-semibold block mb-1">Stock Disponible</label><input type="number" name="stock" required value="<%= editStock %>" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
-                    <button type="submit" class="w-full h-[48px] rounded-xl bg-secondary text-white font-semibold text-sm shadow-md hover:bg-indigo-700 transition-all"><%= modoEdicion ? "Actualizar Producto" : "Registrar Producto" %></button>
+                    <div><label class="text-xs text-slate-700 font-semibold block mb-1.5">Nombre del Producto</label><input type="text" name="nombre" required value="<%= editNombre %>" placeholder="Ej. Laptop HP 15" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
+                    <div><label class="text-xs text-slate-700 font-semibold block mb-1.5">Categoría</label><input type="text" name="categoria" required value="<%= editCategoria %>" placeholder="Ej. Equipos de Cómputo" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
+                    <div><label class="text-xs text-slate-700 font-semibold block mb-1.5">Precio Unitario ($)</label><input type="number" step="0.01" name="precio" required value="<%= editPrecio %>" placeholder="0.00" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
+                    <div><label class="text-xs text-slate-700 font-semibold block mb-1.5">Stock Disponible</label><input type="number" name="stock" required value="<%= editStock %>" placeholder="0" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
+                    <button type="submit" class="w-full h-[48px] rounded-xl bg-secondary hover:bg-indigo-700 text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]"><%= modoEdicion ? "save" : "add_box" %></span>
+                        <span><%= modoEdicion ? "Actualizar Producto" : "Guardar Producto" %></span>
+                    </button>
                 </form>
             </div>
             <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h2 class="text-xl font-bold mb-4">Catálogo de Inventario</h2>
+                <h2 class="text-xl font-bold text-slate-900 mb-1">Catálogo de Inventario</h2>
+                <p class="text-xs text-slate-500 mb-6">Listado general de mercadería y stock registrado.</p>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
-                        <thead><tr class="border-b text-xs text-slate-400 uppercase"><th class="py-3 px-4">ID</th><th class="py-3 px-4">PRODUCTO</th><th class="py-3 px-4">CATEGORÍA</th><th class="py-3 px-4">PRECIO</th><th class="py-3 px-4">STOCK</th><th class="py-3 px-4 text-center">ACCIONES</th></tr></thead>
-                        <tbody class="text-sm divide-y">
+                        <thead><tr class="border-b border-slate-100 text-xs text-slate-400 uppercase tracking-wider"><th class="py-3 px-4 font-semibold">ID</th><th class="py-3 px-4 font-semibold">PRODUCTO</th><th class="py-3 px-4 font-semibold">CATEGORÍA</th><th class="py-3 px-4 font-semibold">PRECIO</th><th class="py-3 px-4 font-semibold">STOCK</th><th class="py-3 px-4 font-semibold text-center">ACCIONES</th></tr></thead>
+                        <tbody class="text-sm divide-y divide-slate-100">
                             <% try {
                                 Connection c = DriverManager.getConnection(url, usuarioDb, passwordDb);
                                 Statement s = c.createStatement(); ResultSet r = s.executeQuery("SELECT * FROM productos");
                                 while(r.next()) {
                             %>
-                            <tr class="hover:bg-slate-50">
-                                <td class="py-3 px-4">#<%= r.getString("id_producto") %></td>
-                                <td class="py-3 px-4 font-semibold"><%= r.getString("nombre") %></td>
-                                <td class="py-3 px-4"><span class="px-2 py-1 rounded bg-amber-50 text-amber-700 text-xs font-semibold"><%= r.getString("categoria") %></span></td>
-                                <td class="py-3 px-4 font-bold text-slate-700">$<%= r.getString("precio") %></td>
-                                <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 text-xs font-bold"><%= r.getString("stock") %> un.</span></td>
-                                <td class="py-3 px-4 text-center">
-                                    <a href="productos.jsp?accion=preeditar&id=<%= r.getString("id_producto") %>" class="p-1.5 rounded bg-indigo-50 text-secondary inline-block mr-1"><span class="material-symbols-outlined text-[16px]">edit</span></a>
-                                    <a href="productos.jsp?accion=eliminar&id=<%= r.getString("id_producto") %>" onclick="return confirm('¿Eliminar producto?');" class="p-1.5 rounded bg-red-50 text-red-600 inline-block"><span class="material-symbols-outlined text-[16px]">delete</span></a>
+                            <tr class="hover:bg-slate-50/50">
+                                <td class="py-3.5 px-4 text-slate-600 font-medium">#<%= r.getString("id_producto") %></td>
+                                <td class="py-3.5 px-4 text-slate-900 font-semibold"><%= r.getString("nombre") %></td>
+                                <td class="py-3.5 px-4"><span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold"><%= r.getString("categoria") %></span></td>
+                                <td class="py-3.5 px-4 font-bold text-slate-800">$<%= r.getString("precio") %></td>
+                                <td class="py-3.5 px-4"><span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 text-xs font-bold"><%= r.getString("stock") %> un.</span></td>
+                                <td class="py-3.5 px-4 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <a href="productos.jsp?accion=preeditar&id=<%= r.getString("id_producto") %>" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-50 text-secondary hover:bg-indigo-100 transition-all"><span class="material-symbols-outlined text-[18px]">edit</span></a>
+                                        <a href="productos.jsp?accion=eliminar&id=<%= r.getString("id_producto") %>" onclick="return confirm('¿Eliminar producto?');" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-all"><span class="material-symbols-outlined text-[18px]">delete</span></a>
+                                    </div>
                                 </td>
                             </tr>
-                            <% } r.close(); s.close(); c.close(); } catch(Exception e) { %><tr><td colspan="6" class="text-center text-red-500 py-4 text-xs">Error al cargar inventario</td></tr><% } %>
+                            <% } r.close(); s.close(); c.close(); } catch(Exception e) { %><tr><td colspan="6" class="text-center text-red-500 py-4 text-xs">Error al cargar inventario: <%= e.getMessage() %></td></tr><% } %>
                         </tbody>
                     </table>
                 </div>

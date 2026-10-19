@@ -119,7 +119,7 @@
                 </div>
             </div>
 
-            <!-- Módulo 6: Gestión de Mercadería / Productos -->
+<!-- Módulo 6: Gestión de Mercadería / Productos -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all flex flex-col justify-between">
                 <div>
                     <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4">
@@ -129,10 +129,11 @@
                     <p class="text-xs text-slate-500 leading-relaxed">Control de inventario, stock disponible, categorías, precios unitarios y servicios del negocio.</p>
                 </div>
                 <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                    <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">Próximamente</span>
-                    <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
-                        <span>Bloqueado</span>
-                    </span>
+                    <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Activo</span>
+                    <a href="productos.jsp" class="text-xs font-bold text-secondary hover:underline flex items-center gap-1">
+                        <span>Acceder</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
                 </div>
             </div>
 
@@ -146,10 +147,11 @@
                     <p class="text-xs text-slate-500 leading-relaxed">Registro y procesamiento de operaciones de venta, comprobantes y detalle de transacciones.</p>
                 </div>
                 <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                    <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">Próximamente</span>
-                    <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
-                        <span>Bloqueado</span>
-                    </span>
+                    <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Activo</span>
+                    <a href="ventas.jsp" class="text-xs font-bold text-secondary hover:underline flex items-center gap-1">
+                        <span>Acceder</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
                 </div>
             </div>
 
@@ -163,10 +165,11 @@
                     <p class="text-xs text-slate-500 leading-relaxed">Generación de informes ejecutivos de actividades, ventas y stock, exportables a formatos estándar.</p>
                 </div>
                 <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                    <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">Próximamente</span>
-                    <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
-                        <span>Bloqueado</span>
-                    </span>
+                    <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Activo</span>
+                    <a href="reportes.jsp" class="text-xs font-bold text-secondary hover:underline flex items-center gap-1">
+                        <span>Acceder</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
                 </div>
             </div>
 

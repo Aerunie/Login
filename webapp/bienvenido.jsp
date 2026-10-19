@@ -111,10 +111,11 @@
                     <p class="text-xs text-slate-500 leading-relaxed">Control de proveedores comerciales, razones sociales, catálogos de compras y transacciones.</p>
                 </div>
                 <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                    <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">Próximamente</span>
-                    <span class="text-xs font-bold text-slate-400 flex items-center gap-1">
-                        <span>Bloqueado</span>
-                    </span>
+                    <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Activo</span>
+                    <a href="proveedores.jsp" class="text-xs font-bold text-secondary hover:underline flex items-center gap-1">
+                        <span>Acceder</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
                 </div>
             </div>
 

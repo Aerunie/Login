@@ -35,36 +35,42 @@
     <title>Aegis ID - Reportería y OLAP</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config={theme:{extend:{colors:{"on-surface":"#131b2e","primary":"#070235","secondary":"#4e45d5","surface":"#faf8ff"}}}};.</script>
     <style>
+        html,body{margin:0;padding:0;}body{overscroll-behavior:none;}::-webkit-scrollbar{display:none;}
         @media print {
             header, .no-print { display: none !important; }
             body { background: white !important; color: black !important; }
             .shadow-sm, .shadow-md { box-shadow: none !important; border: 1px solid #cbd5e1 !important; }
         }
     </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config={theme:{extend:{colors:{"on-surface":"#131b2e","primary":"#070235","secondary":"#4e45d5","surface-container":"#eaedff","surface":"#faf8ff","surface-container-low":"#f2f3ff","error":"#ba1a1a"}}}}
+    </script>
 </head>
 <body class="bg-surface text-on-surface min-h-screen font-sans" style="font-family:'Plus Jakarta Sans',sans-serif;">
     <header class="bg-primary text-white shadow-md">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <a href="bienvenido.jsp" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"><span class="material-symbols-outlined text-white text-[24px]">arrow_back</span></a>
-                <div><h1 class="text-lg font-bold">Módulo 8: Reportería y OLAP</h1><p class="text-xs text-indigo-200">Informes ejecutivos</p></div>
+                <div><h1 class="text-lg font-bold tracking-tight">Módulo 8: Reportería y OLAP</h1><p class="text-xs text-indigo-200">Informes ejecutivos</p></div>
             </div>
             <div class="flex items-center gap-3">
                 <button onclick="window.print()" class="no-print px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all shadow-sm flex items-center gap-2">
                     <span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
                     <span>Exportar a PDF</span>
                 </button>
-                <a href="bienvenido.jsp?accion=salir" class="no-print px-4 py-2 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-200 text-xs font-semibold border border-red-500/30 flex items-center gap-2">Salir</a>
+                <a href="bienvenido.jsp?accion=salir" class="no-print px-4 py-2 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-200 hover:text-white text-xs font-semibold transition-all border border-red-500/30 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">logout</span>
+                    <span>Salir</span>
+                </a>
             </div>
         </div>
     </header>
     <main class="max-w-7xl mx-auto px-6 py-10">
         <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h2 class="text-2xl font-bold tracking-tight">Reporte General del Sistema</h2>
+                <h2 class="text-2xl font-bold tracking-tight text-slate-900">Reporte General del Sistema</h2>
                 <p class="text-xs text-slate-500 mt-1">Consolidado métrico de todas las áreas empresariales de Aegis ID Enterprise.</p>
             </div>
             <div class="text-xs text-slate-500 font-semibold bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm">
@@ -96,7 +102,7 @@
         </div>
 
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-            <h3 class="text-lg font-bold mb-4">Resumen de Cobertura Operativa</h3>
+            <h3 class="text-lg font-bold text-slate-900 mb-4">Resumen de Cobertura Operativa</h3>
             <div class="space-y-4 text-sm">
                 <div class="flex justify-between py-2 border-b border-slate-100">
                     <span class="text-slate-600 font-medium">Módulo 3 (Usuarios Registrados)</span>

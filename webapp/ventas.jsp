@@ -48,30 +48,37 @@
     <title>Aegis ID - Módulo de Ventas</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>html,body{margin:0;padding:0;}body{overscroll-behavior:none;}::-webkit-scrollbar{display:none;}</style>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config={theme:{extend:{colors:{"on-surface":"#131b2e","primary":"#070235","secondary":"#4e45d5","surface":"#faf8ff"}}}};.</script>
+    <script>
+    tailwind.config={theme:{extend:{colors:{"on-surface":"#131b2e","primary":"#070235","secondary":"#4e45d5","surface-container":"#eaedff","surface":"#faf8ff","surface-container-low":"#f2f3ff","error":"#ba1a1a"}}}}
+    </script>
 </head>
 <body class="bg-surface text-on-surface min-h-screen font-sans" style="font-family:'Plus Jakarta Sans',sans-serif;">
     <header class="bg-primary text-white shadow-md">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <a href="bienvenido.jsp" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"><span class="material-symbols-outlined text-white text-[24px]">arrow_back</span></a>
-                <div><h1 class="text-lg font-bold">Módulo 7: Ventas y Facturación</h1><p class="text-xs text-indigo-200">Procesamiento de órdenes</p></div>
+                <div><h1 class="text-lg font-bold tracking-tight">Módulo 7: Ventas y Facturación</h1><p class="text-xs text-indigo-200">Procesamiento de órdenes</p></div>
             </div>
-            <a href="bienvenido.jsp?accion=salir" class="px-4 py-2 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-200 text-xs font-semibold border border-red-500/30 flex items-center gap-2">Cerrar Sesión</a>
+            <a href="bienvenido.jsp?accion=salir" class="px-4 py-2 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-200 hover:text-white text-xs font-semibold transition-all border border-red-500/30 flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">logout</span>
+                <span>Salir</span>
+            </a>
         </div>
     </header>
     <main class="max-w-7xl mx-auto px-6 py-10">
-        <% if (!mensaje.isEmpty()) { %><div class="mb-6 p-4 rounded-xl text-sm font-semibold text-center <%= "error".equals(tipoMensaje) ? "bg-red-100 text-red-800" : "bg-emerald-50 text-emerald-800" %>"><%= mensaje %></div><% } %>
+        <% if (!mensaje.isEmpty()) { %><div class="mb-6 p-4 rounded-xl text-sm font-semibold text-center <%= "error".equals(tipoMensaje) ? "bg-red-100 text-red-800 border border-red-300" : "bg-emerald-50 text-emerald-800 border border-emerald-200" %>"><%= mensaje %></div><% } %>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 h-fit">
-                <h2 class="text-xl font-bold mb-1">Registrar Nueva Venta</h2>
-                <form method="post" action="ventas.jsp" class="space-y-4 mt-4">
+                <h2 class="text-xl font-bold text-slate-900 mb-1">Registrar Nueva Venta</h2>
+                <p class="text-xs text-slate-500 mb-6">Procesa una transacción comercial.</p>
+                <form method="post" action="ventas.jsp" class="space-y-4">
                     <input type="hidden" name="accion" value="registrar">
-                    <div><label class="text-xs font-semibold block mb-1">Cliente / Razón Social</label><input type="text" name="cliente" required placeholder="Nombre del cliente" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
-                    <div><label class="text-xs font-semibold block mb-1">Monto Total ($)</label><input type="number" step="0.01" name="total" required placeholder="0.00" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
+                    <div><label class="text-xs text-slate-700 font-semibold block mb-1.5">Cliente / Razón Social</label><input type="text" name="cliente" required placeholder="Ej. Empresa SAC o Juan Pérez" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
+                    <div><label class="text-xs text-slate-700 font-semibold block mb-1.5">Monto Total ($)</label><input type="number" step="0.01" name="total" required placeholder="0.00" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/></div>
                     <div>
-                        <label class="text-xs font-semibold block mb-1">Método de Pago</label>
+                        <label class="text-xs text-slate-700 font-semibold block mb-1.5">Método de Pago</label>
                         <select name="metodo_pago" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40 bg-white">
                             <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
                             <option value="Transferencia Bancaria">Transferencia Bancaria</option>
@@ -79,30 +86,34 @@
                             <option value="Yape / Plin">Yape / Plin</option>
                         </select>
                     </div>
-                    <button type="submit" class="w-full h-[48px] rounded-xl bg-secondary text-white font-semibold text-sm shadow-md hover:bg-indigo-700 transition-all">Procesar Venta</button>
+                    <button type="submit" class="w-full h-[48px] rounded-xl bg-secondary hover:bg-indigo-700 text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">shopping_cart_checkout</span>
+                        <span>Procesar Venta</span>
+                    </button>
                 </form>
             </div>
             <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h2 class="text-xl font-bold mb-4">Historial de Ventas</h2>
+                <h2 class="text-xl font-bold text-slate-900 mb-1">Historial de Ventas</h2>
+                <p class="text-xs text-slate-500 mb-6">Listado general de órdenes procesadas.</p>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
-                        <thead><tr class="border-b text-xs text-slate-400 uppercase"><th class="py-3 px-4">ID</th><th class="py-3 px-4">CLIENTE</th><th class="py-3 px-4">MÉTODO PAGO</th><th class="py-3 px-4">TOTAL</th><th class="py-3 px-4 text-center">ACCIONES</th></tr></thead>
-                        <tbody class="text-sm divide-y">
+                        <thead><tr class="border-b border-slate-100 text-xs text-slate-400 uppercase tracking-wider"><th class="py-3 px-4 font-semibold">ID</th><th class="py-3 px-4 font-semibold">CLIENTE</th><th class="py-3 px-4 font-semibold">MÉTODO PAGO</th><th class="py-3 px-4 font-semibold">TOTAL</th><th class="py-3 px-4 font-semibold text-center">ACCIONES</th></tr></thead>
+                        <tbody class="text-sm divide-y divide-slate-100">
                             <% try {
                                 Connection c = DriverManager.getConnection(url, usuarioDb, passwordDb);
                                 Statement s = c.createStatement(); ResultSet r = s.executeQuery("SELECT * FROM ventas ORDER BY id_venta DESC");
                                 while(r.next()) {
                             %>
-                            <tr class="hover:bg-slate-50">
-                                <td class="py-3 px-4">#<%= r.getString("id_venta") %></td>
-                                <td class="py-3 px-4 font-semibold"><%= r.getString("cliente") %></td>
-                                <td class="py-3 px-4"><span class="px-2 py-1 rounded bg-emerald-50 text-emerald-700 text-xs font-semibold"><%= r.getString("metodo_pago") %></span></td>
-                                <td class="py-3 px-4 font-bold text-slate-800">$<%= r.getString("total") %></td>
-                                <td class="py-3 px-4 text-center">
-                                    <a href="ventas.jsp?accion=eliminar&id=<%= r.getString("id_venta") %>" onclick="return confirm('¿Anular esta venta?');" class="p-1.5 rounded bg-red-50 text-red-600 inline-block"><span class="material-symbols-outlined text-[16px]">delete</span></a>
+                            <tr class="hover:bg-slate-50/50">
+                                <td class="py-3.5 px-4 text-slate-600 font-medium">#<%= r.getString("id_venta") %></td>
+                                <td class="py-3.5 px-4 text-slate-900 font-semibold"><%= r.getString("cliente") %></td>
+                                <td class="py-3.5 px-4"><span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold"><%= r.getString("metodo_pago") %></span></td>
+                                <td class="py-3.5 px-4 font-bold text-slate-800">$<%= r.getString("total") %></td>
+                                <td class="py-3.5 px-4 text-center">
+                                    <a href="ventas.jsp?accion=eliminar&id=<%= r.getString("id_venta") %>" onclick="return confirm('¿Anular esta venta?');" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-all"><span class="material-symbols-outlined text-[18px]">delete</span></a>
                                 </td>
                             </tr>
-                            <% } r.close(); s.close(); c.close(); } catch(Exception e) { %><tr><td colspan="5" class="text-center text-red-500 py-4 text-xs">Error al cargar ventas</td></tr><% } %>
+                            <% } r.close(); s.close(); c.close(); } catch(Exception e) { %><tr><td colspan="5" class="text-center text-red-500 py-4 text-xs">Error al cargar ventas: <%= e.getMessage() %></td></tr><% } %>
                         </tbody>
                     </table>
                 </div>

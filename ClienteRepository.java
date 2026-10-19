@@ -74,8 +74,8 @@ public class ClienteRepository {
                 map.put("id_cliente", rs.getString("id_cliente"));
                 map.put("nombre", rs.getString("nombre"));
                 map.put("correo", rs.getString("correo"));
-                map.put("telefono", rs.getString("telefono"));
-                map.put("direccion", rs.getString("direccion"));
+                map.put("telefono", rs.getString("telefono") != null ? rs.getString("telefono") : "-");
+                map.put("direccion", rs.getString("direccion") != null ? rs.getString("direccion") : "");
                 map.put("estado", rs.getString("estado"));
                 lista.add(map);
             }

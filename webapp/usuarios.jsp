@@ -25,15 +25,17 @@
         Connection conn = DriverManager.getConnection(url, usuarioDb, passwordDb);
         Statement st = conn.createStatement();
 
-        // Asegurar que la tabla usuarios tenga los campos necesarios para el CRUD
+        // 1. Asegurar tabla base
         st.executeUpdate("CREATE TABLE IF NOT EXISTS usuarios ("
             + "id_usuario INT AUTO_INCREMENT PRIMARY KEY, "
             + "correo VARCHAR(100) NOT NULL UNIQUE, "
-            + "clave VARCHAR(100) NOT NULL, "
-            + "rol VARCHAR(50) DEFAULT 'Administrador', "
-            + "estado VARCHAR(15) DEFAULT 'Activo', "
-            + "intentos_fallidos INT DEFAULT 0, "
-            + "bloqueado BOOLEAN DEFAULT FALSE)");
+            + "clave VARCHAR(100) NOT NULL)");
+
+        // 2. Agregar columnas faltantes si la tabla ya existía de antes
+        try { st.executeUpdate("ALTER TABLE usuarios ADD COLUMN rol VARCHAR(50) DEFAULT 'Administrador'"); } catch (Exception ex) {}
+        try { st.executeUpdate("ALTER TABLE usuarios ADD COLUMN estado VARCHAR(15) DEFAULT 'Activo'"); } catch (Exception ex) {}
+        try { st.executeUpdate("ALTER TABLE usuarios ADD COLUMN intentos_fallidos INT DEFAULT 0"); } catch (Exception ex) {}
+        try { st.executeUpdate("ALTER TABLE usuarios ADD COLUMN bloqueado BOOLEAN DEFAULT FALSE"); } catch (Exception ex) {}
 
         // Procesar acciones POST (Crear / Eliminar)
         String accion = request.getParameter("accion");
@@ -61,6 +63,7 @@
             tipoMensaje = "success";
         }
 
+        st.close();
         conn.close();
     } catch (Exception e) {
         mensaje = "Error en base de datos: " + e.getMessage();
@@ -167,10 +170,10 @@
                         <thead>
                             <tr class="border-b border-slate-100 text-xs text-slate-400 uppercase tracking-wider">
                                 <th class="py-3 px-4 font-semibold">ID</th>
-                                <th class="py-3 px-4 font-semibold">Correo</th>
-                                <th class="py-3 px-4 font-semibold">Rol</th>
-                                <th class="py-3 px-4 font-semibold">Estado</th>
-                                <th class="py-3 px-4 font-semibold text-center">Acciones</th>
+                                <th class="py-3 px-4 font-semibold">CORREO</th>
+                                <th class="py-3 px-4 font-semibold">ROL</th>
+                                <th class="py-3 px-4 font-semibold">ESTADO</th>
+                                <th class="py-3 px-4 font-semibold text-center">ACCIONES</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm divide-y divide-slate-100">

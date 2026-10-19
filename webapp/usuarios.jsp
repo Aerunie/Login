@@ -11,6 +11,12 @@
     String mensaje = "";
     String tipoMensaje = "";
 
+    // Variables para el formulario de edición
+    String editId = "";
+    String editCorreo = "";
+    String editRol = "Administrador";
+    boolean modoEdicion = false;
+
     // Configuración de conexión MySQL
     String host = System.getenv("MYSQLHOST") != null ? System.getenv("MYSQLHOST") : "localhost";
     String port = System.getenv("MYSQLPORT") != null ? System.getenv("MYSQLPORT") : "3306";
@@ -25,19 +31,18 @@
         Connection conn = DriverManager.getConnection(url, usuarioDb, passwordDb);
         Statement st = conn.createStatement();
 
-        // 1. Asegurar tabla base
+        // 1. Asegurar tabla base y columnas
         st.executeUpdate("CREATE TABLE IF NOT EXISTS usuarios ("
             + "id_usuario INT AUTO_INCREMENT PRIMARY KEY, "
             + "correo VARCHAR(100) NOT NULL UNIQUE, "
             + "clave VARCHAR(100) NOT NULL)");
 
-        // 2. Agregar columnas faltantes si la tabla ya existía de antes
         try { st.executeUpdate("ALTER TABLE usuarios ADD COLUMN rol VARCHAR(50) DEFAULT 'Administrador'"); } catch (Exception ex) {}
         try { st.executeUpdate("ALTER TABLE usuarios ADD COLUMN estado VARCHAR(15) DEFAULT 'Activo'"); } catch (Exception ex) {}
         try { st.executeUpdate("ALTER TABLE usuarios ADD COLUMN intentos_fallidos INT DEFAULT 0"); } catch (Exception ex) {}
         try { st.executeUpdate("ALTER TABLE usuarios ADD COLUMN bloqueado BOOLEAN DEFAULT FALSE"); } catch (Exception ex) {}
 
-        // Procesar acciones POST (Crear / Eliminar)
+        // 2. Procesar acciones POST (Crear / Actualizar / Eliminar)
         String accion = request.getParameter("accion");
         if ("crear".equalsIgnoreCase(accion)) {
             String nuevoCorreo = request.getParameter("correo");
@@ -53,6 +58,32 @@
             psInsert.close();
             mensaje = "Usuario registrado exitosamente.";
             tipoMensaje = "success";
+        } else if ("actualizar".equalsIgnoreCase(accion)) {
+            String idAct = request.getParameter("id_usuario");
+            String actCorreo = request.getParameter("correo");
+            String actClave = request.getParameter("clave");
+            String actRol = request.getParameter("rol");
+
+            if (actClave != null && !actClave.trim().isEmpty()) {
+                PreparedStatement psUpd = conn.prepareStatement(
+                    "UPDATE usuarios SET correo = ?, clave = ?, rol = ? WHERE id_usuario = ?");
+                psUpd.setString(1, actCorreo);
+                psUpd.setString(2, actClave);
+                psUpd.setString(3, actRol);
+                psUpd.setString(4, idAct);
+                psUpd.executeUpdate();
+                psUpd.close();
+            } else {
+                PreparedStatement psUpd = conn.prepareStatement(
+                    "UPDATE usuarios SET correo = ?, rol = ? WHERE id_usuario = ?");
+                psUpd.setString(1, actCorreo);
+                psUpd.setString(2, actRol);
+                psUpd.setString(3, idAct);
+                psUpd.executeUpdate();
+                psUpd.close();
+            }
+            mensaje = "Usuario actualizado correctamente.";
+            tipoMensaje = "success";
         } else if ("eliminar".equalsIgnoreCase(accion)) {
             String idEliminar = request.getParameter("id");
             PreparedStatement psDelete = conn.prepareStatement("DELETE FROM usuarios WHERE id_usuario = ?");
@@ -61,6 +92,19 @@
             psDelete.close();
             mensaje = "Usuario eliminado correctamente.";
             tipoMensaje = "success";
+        } else if ("preeditar".equalsIgnoreCase(accion)) {
+            String idEdit = request.getParameter("id");
+            PreparedStatement psEd = conn.prepareStatement("SELECT id_usuario, correo, rol FROM usuarios WHERE id_usuario = ?");
+            psEd.setString(1, idEdit);
+            ResultSet rsEd = psEd.executeQuery();
+            if (rsEd.next()) {
+                editId = rsEd.getString("id_usuario");
+                editCorreo = rsEd.getString("correo");
+                editRol = rsEd.getString("rol") != null ? rsEd.getString("rol") : "Administrador";
+                modoEdicion = true;
+            }
+            rsEd.close();
+            psEd.close();
         }
 
         st.close();
@@ -123,44 +167,54 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <!-- Formulario de Registro / Creación de Usuario -->
+            <!-- Formulario dinámico (Crear o Modificar) -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 h-fit">
-                <h2 class="text-xl font-bold text-slate-900 mb-1">Registrar Nuevo Usuario</h2>
-                <p class="text-xs text-slate-500 mb-6">Añade credenciales y asigna roles al sistema.</p>
+                <h2 class="text-xl font-bold text-slate-900 mb-1"><%= modoEdicion ? "Modificar Usuario" : "Registrar Nuevo Usuario" %></h2>
+                <p class="text-xs text-slate-500 mb-6"><%= modoEdicion ? "Actualiza los datos del usuario seleccionado." : "Añade credenciales y asigna roles al sistema." %></p>
 
                 <form method="post" action="usuarios.jsp" class="space-y-4">
-                    <input type="hidden" name="accion" value="crear">
+                    <input type="hidden" name="accion" value="<%= modoEdicion ? "actualizar" : "crear" %>">
+                    <% if (modoEdicion) { %>
+                    <input type="hidden" name="id_usuario" value="<%= editId %>">
+                    <% } %>
 
                     <div>
                         <label class="text-xs text-slate-700 font-semibold block mb-1.5">Correo Electrónico</label>
-                        <input type="email" name="correo" required placeholder="usuario@empresa.com"
+                        <input type="email" name="correo" required placeholder="usuario@empresa.com" value="<%= editCorreo %>"
                                class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/>
                     </div>
 
                     <div>
-                        <label class="text-xs text-slate-700 font-semibold block mb-1.5">Contraseña Temporal</label>
-                        <input type="password" name="clave" required placeholder="••••••••"
+                        <label class="text-xs text-slate-700 font-semibold block mb-1.5">Contraseña <%= modoEdicion ? "(Dejar en blanco para mantener la actual)" : "Temporal" %></label>
+                        <input type="password" name="clave" <%= modoEdicion ? "" : "required" %> placeholder="••••••••"
                                class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40"/>
                     </div>
 
                     <div>
                         <label class="text-xs text-slate-700 font-semibold block mb-1.5">Rol del Sistema</label>
                         <select name="rol" class="w-full h-[46px] px-4 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-secondary/40 bg-white">
-                            <option value="Administrador">Administrador</option>
-                            <option value="Editor">Editor</option>
-                            <option value="Operador">Operador</option>
-                            <option value="Invitado">Invitado</option>
+                            <option value="Administrador" <%= "Administrador".equals(editRol) ? "selected" : "" %>>Administrador</option>
+                            <option value="Editor" <%= "Editor".equals(editRol) ? "selected" : "" %>>Editor</option>
+                            <option value="Operador" <%= "Operador".equals(editRol) ? "selected" : "" %>>Operador</option>
+                            <option value="Invitado" <%= "Invitado".equals(editRol) ? "selected" : "" %>>Invitado</option>
                         </select>
                     </div>
 
-                    <button type="submit" class="w-full h-[48px] rounded-xl bg-secondary hover:bg-indigo-700 text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2">
-                        <span class="material-symbols-outlined text-[20px]">person_add</span>
-                        <span>Guardar Usuario</span>
-                    </button>
+                    <div class="flex gap-3">
+                        <button type="submit" class="flex-1 h-[48px] rounded-xl bg-secondary hover:bg-indigo-700 text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[20px]"><%= modoEdicion ? "save" : "person_add" %></span>
+                            <span><%= modoEdicion ? "Actualizar" : "Guardar Usuario" %></span>
+                        </button>
+                        <% if (modoEdicion) { %>
+                        <a href="usuarios.jsp" class="px-4 h-[48px] rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-all flex items-center justify-center">
+                            Cancelar
+                        </a>
+                        <% } %>
+                    </div>
                 </form>
             </div>
 
-            <!-- Listado de Usuarios (Tabla CRUD) -->
+            <!-- Listado de Usuarios (Tabla CRUD con Modificar y Eliminar) -->
             <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                 <h2 class="text-xl font-bold text-slate-900 mb-1">Usuarios Registrados</h2>
                 <p class="text-xs text-slate-500 mb-6">Listado general de cuentas activas en la base de datos.</p>
@@ -199,11 +253,19 @@
                                     <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold"><%= estUsr %></span>
                                 </td>
                                 <td class="py-3.5 px-4 text-center">
-                                    <a href="usuarios.jsp?accion=eliminar&id=<%= idUsr %>" 
-                                       onclick="return confirm('¿Estás seguro de eliminar este usuario?');"
-                                       class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-all">
-                                        <span class="material-symbols-outlined text-[18px]">delete</span>
-                                    </a>
+                                    <div class="flex items-center justify-center gap-2">
+                                        <!-- Botón Editar -->
+                                        <a href="usuarios.jsp?accion=preeditar&id=<%= idUsr %>" 
+                                           class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-50 text-secondary hover:bg-indigo-100 transition-all" title="Modificar">
+                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                        </a>
+                                        <!-- Botón Eliminar -->
+                                        <a href="usuarios.jsp?accion=eliminar&id=<%= idUsr %>" 
+                                           onclick="return confirm('¿Estás seguro de eliminar este usuario?');"
+                                           class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-all" title="Eliminar">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                             <%

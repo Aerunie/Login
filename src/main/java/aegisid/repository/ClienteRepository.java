@@ -1,4 +1,4 @@
-package com.aegisid.repository;
+package aegisid.repository;
 
 import com.aegisid.config.DatabaseConnection;
 import java.sql.*;

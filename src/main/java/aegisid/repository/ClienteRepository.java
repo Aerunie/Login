@@ -1,6 +1,6 @@
 package aegisid.repository;
 
-import com.aegisid.config.DatabaseConnection;
+import aegisid.config.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;

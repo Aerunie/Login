@@ -1,4 +1,4 @@
-package com.aegisid.config;
+package aegisid.config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
